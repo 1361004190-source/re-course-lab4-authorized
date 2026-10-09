@@ -1,0 +1,20 @@
+--- a/smali/com/xxx/LicenseManager.smali
++++ b/smali/com/xxx/LicenseManager.smali
+@@ -1,6 +1,6 @@
+-.method public static check(Ljava/lang/String;)Z
+-    .locals 1
+-    invoke-static {p0}, Lcom/xxx/LicenseManager;->compute(Ljava/lang/String;)Ljava/lang/String;
+-    move-result-object v0
+-    invoke-virtual {v0, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+-    move-result v0
+-    return v0
+-.end method
+\ No newline at end of file
++# 补丁思路：把 check() 的返回值直接写成 1（true），绕过全部校验分支。
++# 注意 .locals 需要从 1 提到 2，否则寄存器不够用会导致验证失败（VerifyError）。
++.method public static check(Ljava/lang/String;)Z
++    .locals 2
++    const/4 v1, 0x1              # v1 = true
++    return v1
++.end method
+\ No newline at end of file
